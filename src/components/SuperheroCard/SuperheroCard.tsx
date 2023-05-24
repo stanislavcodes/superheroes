@@ -1,4 +1,14 @@
-import { Button, Card, Flex, Heading, Image } from '@chakra-ui/react';
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Heading,
+  Image,
+  Link,
+} from '@chakra-ui/react';
+import { Link as ReachLink } from 'react-router-dom';
 import { Superhero } from '~/types/Superhero';
 
 interface SuperheroCardProps {
@@ -6,28 +16,44 @@ interface SuperheroCardProps {
 }
 
 export const SuperheroCard = ({ superhero }: SuperheroCardProps) => {
+  const { id, nickname } = superhero;
+
   return (
-    <Card
-      direction={{ base: 'column', sm: 'row' }}
-      overflow="hidden"
-      alignItems={'center'}
-    >
-      <Image
-        objectFit="cover"
-        maxW={{ base: '100%', sm: '200px' }}
-        src="https://images.lifestyleasia.com/wp-content/uploads/sites/7/2022/02/28155940/The-Batman-1.jpg"
-        alt={`${superhero.nickname} Image`}
-      />
+    <>
+      <Card maxW="md" variant={'outline'}>
+        <CardHeader>
+          <Heading textAlign={'center'} size="md">
+            {nickname}
+          </Heading>
+        </CardHeader>
 
-      <Flex w={'100%'} alignItems={'center'} direction={'column'}>
-        <Heading textAlign={'center'} size="md" mb={4}>
-          {superhero.nickname}
-        </Heading>
+        <CardBody>
+          <Image
+            objectFit="cover"
+            rounded={'lg'}
+            maxW={{ base: '100%', md: '100%' }}
+            src="https://images.lifestyleasia.com/wp-content/uploads/sites/7/2022/02/28155940/The-Batman-1.jpg"
+            alt="Chakra UI"
+          />
+        </CardBody>
 
-        <Button w={36} variant="solid" colorScheme="orange">
-          View
-        </Button>
-      </Flex>
-    </Card>
+        <CardFooter
+          justify="space-between"
+          flexWrap="wrap"
+          gap={2}
+          sx={{
+            '& > button': {
+              minW: '136px',
+            },
+          }}
+        >
+          <Link as={ReachLink} to={`superhero/${id}`} flex="1">
+            <Button w={'100%'} colorScheme="purple">
+              Open
+            </Button>
+          </Link>
+        </CardFooter>
+      </Card>
+    </>
   );
 };
