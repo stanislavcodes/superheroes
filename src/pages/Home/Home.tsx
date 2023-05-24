@@ -1,16 +1,13 @@
-import { Container } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { useGetHeroes } from '~/api/useGetHeroes';
-import { CreateForm } from '~/components/CreateForm';
 import { SuperheroesList } from '~/components/SuperheroesList';
 
 export const Home = () => {
-  const { data: superheroes } = useGetHeroes();
+  const { data: superheroes, isLoading } = useGetHeroes();
 
   return (
-    <Container>
-      <CreateForm />
-      
-      <SuperheroesList superheroes={superheroes ?? []} />
-    </Container>
+    <Box py={10} px={6} as="main">
+      <SuperheroesList isLoading={isLoading} superheroes={superheroes ?? []} />
+    </Box>
   );
 };

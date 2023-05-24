@@ -1,7 +1,6 @@
 import {
   Button,
   FormControl,
-  FormHelperText,
   FormLabel,
   Heading,
   Input,
@@ -74,8 +73,6 @@ export const CreateForm = () => {
               onChange={formik.handleChange}
               value={formik.values.nickname}
             />
-
-            <FormHelperText>Enter a superheroes nickname.</FormHelperText>
           </FormControl>
 
           <FormControl isRequired isDisabled={isLoading}>
@@ -91,8 +88,6 @@ export const CreateForm = () => {
               onChange={formik.handleChange}
               value={formik.values.realName}
             />
-
-            <FormHelperText>Enter a superheroes real name.</FormHelperText>
           </FormControl>
 
           <FormControl isRequired isDisabled={isLoading}>
@@ -108,8 +103,6 @@ export const CreateForm = () => {
               onChange={formik.handleChange}
               value={formik.values.catchPhrase}
             />
-
-            <FormHelperText>Enter a superheroes catch phrase.</FormHelperText>
           </FormControl>
 
           <FormControl isRequired isDisabled={isLoading}>
