@@ -8,7 +8,9 @@ export const useDeleteHero = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => del<Superhero>(`${API_URL}/superheroes/${id}`),
+    mutationFn: (id: string) => (
+      del<Superhero>(`${API_URL}/superheroes/${id}`)
+    ),
     onSuccess: () => {
       queryClient.invalidateQueries(['heroes']);
     },

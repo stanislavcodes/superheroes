@@ -8,7 +8,6 @@ export const useUpdateHero = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ['updating-hero'],
     mutationFn: (superhero: Superhero) =>
       put<Superhero>(`${API_URL}/superheroes/${superhero.id}`, superhero),
     onSuccess: () => {
