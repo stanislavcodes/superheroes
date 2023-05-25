@@ -54,8 +54,8 @@ export const Auth = () => {
           align="flex-start"
           bg={'white'}
           rounded={'md'}
-          height={'100%'}
-          alignItems={'center'}
+          height={'60vh'}
+          justifyContent={'center'}
         >
           {isAlert ? (
             <>
@@ -88,7 +88,7 @@ export const Auth = () => {
           ) : (
             <>
               <Heading color={'purple.500'} as={'h1'} size={'xl'}>
-                Hey!
+                Hey 👋!
               </Heading>
 
               <Heading as={'h3'} size={'md'}>
