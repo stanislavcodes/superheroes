@@ -23,7 +23,7 @@ export const Pagination = ({
       gap={{ base: 2, md: 4 }}
       sx={{
         '& > button': {
-          minW: '100px',
+          minW: '140px',
         },
       }}
       direction={{ base: 'column', sm: 'row' }}
@@ -34,7 +34,7 @@ export const Pagination = ({
         isDisabled={isPrevPageDisabled}
         colorScheme="purple"
       >
-        {isPrevPageDisabled ? 'First page' : 'Next'}
+        {isPrevPageDisabled ? 'First page' : 'Previous'}
       </Button>
 
       <Text fontWeight={'medium'}>
