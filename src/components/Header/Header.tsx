@@ -42,7 +42,7 @@ export const Header = ({ toggleSidebar }: HeaderProps) => {
             <Button
               ref={btnRef}
               onClick={logOut}
-              variant={'ghost'}
+              variant={'outline'}
               colorScheme="cyan"
             >
               Log out
