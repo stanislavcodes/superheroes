@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useEffect,useState } from 'react';
 import { Superhero } from '~/types/Superhero';
 import { SuperheroesCount } from '~/types/SuperheroesCount';
 import { get } from '~/utils/requests';
@@ -25,16 +25,12 @@ export const useGetHeroes = () => {
     }
   };
 
-  const { data: heroesCount = { count: 0 } } = useQuery({
+  const { data: heroesCount = { count: 0 }, refetch } = useQuery({
     queryKey: ['heroes-count'],
     queryFn: () => get<SuperheroesCount>(`${API_URL}/superheroes/count`),
   });
 
-  const pages = Math.ceil(
-    heroesCount.count
-      ? heroesCount.count / 5
-      : 0,
-  );
+  const pages = Math.ceil(heroesCount.count / 5);
 
   const heroesQuery = useQuery({
     queryKey: ['heroes', page],
@@ -48,5 +44,7 @@ export const useGetHeroes = () => {
     page,
     prevPage,
     nextPage,
+    refetchHeroes: heroesQuery.refetch,
+    refetchCount: refetch,
   };
 };

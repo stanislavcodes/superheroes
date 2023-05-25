@@ -1,7 +1,6 @@
-import { useMutation,useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Superhero } from '~/types/Superhero';
 import { post } from '~/utils/requests';
-
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -12,7 +11,7 @@ export const useCreateHero = (onSuccess?: () => void) => {
     mutationFn: (superhero: Superhero) =>
       post<Superhero>(`${API_URL}/superheroes`, superhero),
     onSuccess: () => {
-      queryClient.invalidateQueries(['heroes']);
+      queryClient.invalidateQueries({ queryKey: ['heroes', 'heroes-count'] });
 
       if (onSuccess) {
         onSuccess();
