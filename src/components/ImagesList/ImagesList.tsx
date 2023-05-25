@@ -1,4 +1,4 @@
-import { Grid, Image } from '@chakra-ui/react';
+import { Grid,Image } from '@chakra-ui/react';
 
 interface ImagesListProps {
   images: string[];
@@ -7,6 +7,8 @@ interface ImagesListProps {
 export const ImagesList = ({ images }: ImagesListProps) => {
   return (
     <Grid
+      minW={'280px'}
+      maxW={'100%'}
       gridTemplateColumns={`repeat(${images.length}, 1fr)`}
       gridTemplateRows={`min-content`}
       gap={4}
