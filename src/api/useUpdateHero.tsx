@@ -1,10 +1,10 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation,useQueryClient } from '@tanstack/react-query';
 import { Superhero } from '~/types/Superhero';
 import { put } from '~/utils/requests';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-export const useUpdateHero = () => {
+export const useUpdateHero = (onSuccess?: () => void) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -14,6 +14,10 @@ export const useUpdateHero = () => {
       queryClient.invalidateQueries({
         queryKey: ['heroes', 'heroes-count'],
       });
+      
+      if (onSuccess) {
+        onSuccess();
+      }
     },
   });
 };
