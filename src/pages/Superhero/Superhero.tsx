@@ -3,18 +3,39 @@ import {
   Container,
   Flex,
   Heading,
+  Link,
   Skeleton,
   SkeletonText,
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDeleteHero } from '~/api/useDeleteHero';
 import { useGetHero } from '~/api/useGetHero';
 import { ImagesList } from '~/components/ImagesList';
+import { useAuthContext } from '~/contexts/AuthContext';
 
 export const Superhero = () => {
   const { id = '' } = useParams();
-  const { data, isLoading } = useGetHero(id);
+  const navigate = useNavigate();
+  const { isSignedIn } = useAuthContext();
+  const { data, isLoading, isSuccess } = useGetHero(id);
+  const { mutate: deleteHero, isLoading: isRemoving } = useDeleteHero();
+
+  const handleRemove = () => {
+    if (isSignedIn) {
+      deleteHero(id);
+    } else {
+      navigate('/auth');
+    }
+  };
+
+  useEffect(() => {
+    if (isSuccess && !isLoading && !data) {
+      navigate('/404');
+    }
+  }, [isSuccess, isLoading, data]);
 
   return (
     <Container as={'main'} py={6} maxW={'80%'}>
@@ -28,13 +49,13 @@ export const Superhero = () => {
           <ImagesList
             images={[
               'https://images.lifestyleasia.com/wp-content/uploads/sites/7/2022/02/28155940/The-Batman-1.jpg',
-              'https://images.lifestyleasia.com/wp-content/uploads/sites/7/2022/02/28155940/The-Batman-1.jpg',
-              'https://images.lifestyleasia.com/wp-content/uploads/sites/7/2022/02/28155940/The-Batman-1.jpg',
+              'https://media.cnn.com/api/v1/images/stellar/prod/211227135008-02-the-batman-trailer.jpg?c=4x3',
+              'https://sportshub.cbsistatic.com/i/2022/03/05/cc3cdf98-8d25-4809-ac00-b60729ecb46b/the-batman-movie-robert-pattinson.jpg',
             ]}
           />
         </Skeleton>
 
-        {isLoading ? (
+        {isLoading || isRemoving ? (
           <>
             <Skeleton rounded={'md'} height={'36px'} width={'200px'} />
             <Skeleton rounded={'md'} height={'24px'} width={'160px'} />
@@ -95,14 +116,28 @@ export const Superhero = () => {
                 },
               }}
             >
-              <Button flex="1" colorScheme="purple">
+              <Button flex="1" colorScheme="purple" isDisabled={!isSignedIn}>
                 Edit
               </Button>
 
-              <Button flex="1" variant="ghost">
+              <Button
+                onClick={handleRemove}
+                flex="1"
+                variant="ghost"
+                isDisabled={!isSignedIn}
+              >
                 Remove
               </Button>
             </Flex>
+
+            {!isSignedIn && (
+              <Text fontWeight={'medium'}>
+                <Link color={'purple.500'} href={'/auth'}>
+                  Log in
+                </Link>{' '}
+                to edit or delete heroes
+              </Text>
+            )}
           </>
         )}
       </VStack>
