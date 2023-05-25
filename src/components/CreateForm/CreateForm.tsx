@@ -1,8 +1,4 @@
 import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
   Button,
   FormControl,
   FormLabel,
@@ -14,9 +10,12 @@ import {
 import { useFormik } from 'formik';
 import { useState } from 'react';
 import { useCreateHero } from '~/api/useCreateHero';
+import { useGetHeroes } from '~/api/useGetHeroes';
 import { type Superhero } from '~/types/Superhero';
+import { Alert } from '../Alert';
 
 export const CreateForm = () => {
+  const { refetchHeroes, refetchCount } = useGetHeroes();
   const [isSuccessAlert, setIsSuccessAlert] = useState(false);
 
   const formik = useFormik({
@@ -42,6 +41,8 @@ export const CreateForm = () => {
 
   const onSuccessfulSubmit = () => {
     setIsSuccessAlert(true);
+    refetchCount();
+    refetchHeroes();
 
     setTimeout(() => {
       setIsSuccessAlert(false);
@@ -68,24 +69,9 @@ export const CreateForm = () => {
         {isSuccessAlert ? (
           <Alert
             status="success"
-            variant="subtle"
-            flexDirection="column"
-            alignItems="center"
-            alignSelf={'center'}
-            justifyContent="center"
-            textAlign="center"
-            height="200px"
-            mt={6}
-            rounded={'md'}
-          >
-            <AlertIcon boxSize="40px" mr={0} />
-            <AlertTitle mt={4} mb={1} fontSize="lg">
-              Successfully created!
-            </AlertTitle>
-            <AlertDescription maxWidth="sm">
-              Thanks for adding new heroes. I believe you can add even more!
-            </AlertDescription>
-          </Alert>
+            description="Thanks for adding new heroes. I believe you can add even more!"
+            message="Successfully created!"
+          />
         ) : (
           <>
             <Heading color="purple.500">Create a new hero</Heading>
