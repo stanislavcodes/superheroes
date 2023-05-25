@@ -1,4 +1,4 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from '@chakra-ui/react';
 
 interface PaginationProps {
   totalPages: number;
@@ -13,10 +13,9 @@ export const Pagination = ({
   nextPage,
   prevPage,
 }: PaginationProps) => {
-
   const isPrevPageDisabled = currentPage === 1;
   const isNextPageDisabled = currentPage === totalPages;
-  
+
   return (
     <Flex
       justify="center"
@@ -32,7 +31,7 @@ export const Pagination = ({
       <Button
         onClick={prevPage}
         isDisabled={isPrevPageDisabled}
-        colorScheme="purple"
+        colorScheme="cyan"
       >
         {isPrevPageDisabled ? 'First page' : 'Previous'}
       </Button>
@@ -44,7 +43,7 @@ export const Pagination = ({
       <Button
         onClick={nextPage}
         isDisabled={isNextPageDisabled}
-        colorScheme="purple"
+        colorScheme="cyan"
       >
         {isNextPageDisabled ? 'Last page' : 'Next'}
       </Button>

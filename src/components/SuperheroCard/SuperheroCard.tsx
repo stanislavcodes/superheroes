@@ -48,7 +48,7 @@ export const SuperheroCard = ({ superhero }: SuperheroCardProps) => {
           }}
         >
           <Link as={ReachLink} to={`superhero/${id}`} flex="1">
-            <Button w={'100%'} colorScheme="purple">
+            <Button w={'100%'} colorScheme="cyan">
               Open
             </Button>
           </Link>

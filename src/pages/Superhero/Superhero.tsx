@@ -82,7 +82,7 @@ export const Superhero = () => {
           </>
         ) : (
           <>
-            <Heading as="h1" size="lg" color="purple.500">
+            <Heading as="h1" size="lg" color="cyan.500">
               {data?.nickname}
             </Heading>
 
@@ -116,7 +116,7 @@ export const Superhero = () => {
                 },
               }}
             >
-              <Button flex="1" colorScheme="purple" isDisabled={!isSignedIn}>
+              <Button flex="1" colorScheme="cyan" isDisabled={!isSignedIn}>
                 Edit
               </Button>
 
@@ -132,7 +132,7 @@ export const Superhero = () => {
 
             {!isSignedIn && (
               <Text fontWeight={'medium'}>
-                <Link color={'purple.500'} href={'/auth'}>
+                <Link color={'cyan.500'} href={'/auth'}>
                   Log in
                 </Link>{' '}
                 to edit or delete heroes

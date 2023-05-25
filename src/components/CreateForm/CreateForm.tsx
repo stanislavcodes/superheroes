@@ -74,13 +74,13 @@ export const CreateForm = () => {
           />
         ) : (
           <>
-            <Heading color="purple.500">Create a new hero</Heading>
+            <Heading color="cyan.500">Create a new hero</Heading>
 
             <FormControl isRequired isDisabled={isLoading}>
               <FormLabel htmlFor="nickname">Nickname:</FormLabel>
 
               <Input
-                focusBorderColor="purple.500"
+                focusBorderColor="cyan.500"
                 id="nickname"
                 type="text"
                 name="nickname"
@@ -95,7 +95,7 @@ export const CreateForm = () => {
               <FormLabel htmlFor="realName">Real Name:</FormLabel>
 
               <Input
-                focusBorderColor="purple.500"
+                focusBorderColor="cyan.500"
                 id="realName"
                 type="text"
                 name="realName"
@@ -110,7 +110,7 @@ export const CreateForm = () => {
               <FormLabel htmlFor="catchPhrase">Catch phrase:</FormLabel>
 
               <Input
-                focusBorderColor="purple.500"
+                focusBorderColor="cyan.500"
                 id="catchPhrase"
                 type="text"
                 name="catchPhrase"
@@ -155,7 +155,7 @@ export const CreateForm = () => {
 
             <Button
               type="submit"
-              colorScheme="purple"
+              colorScheme="cyan"
               width="full"
               isLoading={isLoading}
               loadingText="Creating"

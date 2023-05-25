@@ -21,7 +21,7 @@ export const NotFound = () => {
         </Text>
 
         <Link as={ReachLink} to={'/'}>
-          <Button w={180} colorScheme="purple">
+          <Button w={180} colorScheme="cyan">
             Back to home
           </Button>
         </Link>

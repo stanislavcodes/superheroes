@@ -78,7 +78,7 @@ export const Auth = () => {
                   />
 
                   <Link as={ReachLink} to={'/'}>
-                    <Button w={'100%'} colorScheme="purple">
+                    <Button w={'100%'} colorScheme="cyan">
                       Back to home
                     </Button>
                   </Link>
@@ -87,7 +87,7 @@ export const Auth = () => {
             </>
           ) : (
             <>
-              <Heading color={'purple.500'} as={'h1'} size={'xl'}>
+              <Heading color={'cyan.500'} as={'h1'} size={'xl'}>
                 Hey 👋!
               </Heading>
 
@@ -99,7 +99,7 @@ export const Auth = () => {
                 <FormLabel htmlFor="email">Email:</FormLabel>
 
                 <Input
-                  focusBorderColor="purple.500"
+                  focusBorderColor="cyan.500"
                   id="email"
                   type="email"
                   name="email"
@@ -113,7 +113,7 @@ export const Auth = () => {
               <Button
                 isLoading={loading}
                 type="submit"
-                colorScheme="purple"
+                colorScheme="cyan"
                 disabled={loading}
               >
                 {loading ? <span>Loading</span> : <span>Send magic link</span>}
