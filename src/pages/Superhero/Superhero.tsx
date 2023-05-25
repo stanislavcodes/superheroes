@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
 import { useGetHero } from '~/api/useGetHero';
-import { ImagesList } from '~/components/ImagesList/ImagesList';
+import { ImagesList } from '~/components/ImagesList';
 
 export const Superhero = () => {
   const { id = '' } = useParams();
