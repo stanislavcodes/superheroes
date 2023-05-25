@@ -1,7 +1,7 @@
 import { Grid,GridItem } from '@chakra-ui/react';
 import { Superhero } from '~/types/Superhero';
-import { SuperheroCard } from '../SuperheroCard';
 import { CardSkeleton } from '../CardSkeleton';
+import { SuperheroCard } from '../SuperheroCard';
 
 interface SuperheroesListProps {
   superheroes: Superhero[];
@@ -15,8 +15,12 @@ export const SuperheroesList = ({
   return (
     <Grid
       w={'100%'}
-      templateColumns="repeat(auto-fill, 300px)"
+      templateColumns={{
+        base: 'minmax(300px, 1fr)',
+        md: 'repeat(auto-fill, 300px)',
+      }}
       gap={6}
+      justifyItems={'center'}
       justifyContent={'center'}
     >
       {isLoading ? (
@@ -40,9 +44,7 @@ export const SuperheroesList = ({
       ) : (
         <>
           {superheroes.map(superhero => (
-            <GridItem>
-              <SuperheroCard key={superhero.id} superhero={superhero} />
-            </GridItem>
+            <SuperheroCard key={superhero.id} superhero={superhero} />
           ))}
         </>
       )}
