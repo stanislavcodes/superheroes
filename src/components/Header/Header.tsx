@@ -1,7 +1,8 @@
-import { Button,Flex,Heading,Link } from '@chakra-ui/react';
+import { Button, Flex, Heading, Link } from '@chakra-ui/react';
 import { useRef } from 'react';
 import { Link as ReachLink } from 'react-router-dom';
 import { useAuthContext } from '~/contexts/AuthContext';
+
 interface HeaderProps {
   toggleSidebar: () => void;
 }
@@ -12,7 +13,6 @@ export const Header = ({ toggleSidebar }: HeaderProps) => {
 
   console.log('isSignedIn', isSignedIn);
   console.log('session', session);
-
 
   return (
     <Flex
@@ -33,25 +33,31 @@ export const Header = ({ toggleSidebar }: HeaderProps) => {
 
       <Flex gap={2}>
         {isSignedIn ? (
-          <Button
-            ref={btnRef}
-            onClick={logOut}
-            variant={'ghost'}
-            colorScheme="purple"
-          >
-            Log out
-          </Button>
+          <>
+            <Button
+              ref={btnRef}
+              onClick={logOut}
+              variant={'ghost'}
+              colorScheme="purple"
+            >
+              Log out
+            </Button>
+
+            <Button
+              ref={btnRef}
+              onClick={toggleSidebar}
+              colorScheme="purple"
+            >
+              Add hero
+            </Button>
+          </>
         ) : (
           <Link as={ReachLink} to={'/auth'}>
-            <Button w={'80px'} colorScheme="purple" variant={'outline'}>
+            <Button w={'80px'} colorScheme="purple">
               Log in
             </Button>
           </Link>
         )}
-
-        <Button ref={btnRef} onClick={toggleSidebar} colorScheme="purple">
-          Add hero
-        </Button>
       </Flex>
     </Flex>
   );
