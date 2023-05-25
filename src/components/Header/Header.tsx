@@ -1,6 +1,7 @@
-import { Button, Flex, Heading, Link } from '@chakra-ui/react';
+import { Button, Flex, Heading, Image, Link } from '@chakra-ui/react';
 import { useRef } from 'react';
 import { Link as ReachLink } from 'react-router-dom';
+import logo from '~/assets/shield.png';
 import { useAuthContext } from '~/contexts/AuthContext';
 
 interface HeaderProps {
@@ -28,7 +29,11 @@ export const Header = ({ toggleSidebar }: HeaderProps) => {
       zIndex={999}
     >
       <ReachLink to={'/'}>
-        <Heading size={'lg'}>Heroes</Heading>
+        <Flex align={'center'} gap={2}>
+          <Image src={logo} alt="logo" maxH={30} />
+
+          <Heading size={'lg'}>Heroes</Heading>
+        </Flex>
       </ReachLink>
 
       <Flex gap={2}>
@@ -38,22 +43,18 @@ export const Header = ({ toggleSidebar }: HeaderProps) => {
               ref={btnRef}
               onClick={logOut}
               variant={'ghost'}
-              colorScheme="purple"
+              colorScheme="cyan"
             >
               Log out
             </Button>
 
-            <Button
-              ref={btnRef}
-              onClick={toggleSidebar}
-              colorScheme="purple"
-            >
+            <Button ref={btnRef} onClick={toggleSidebar} colorScheme="cyan">
               Add hero
             </Button>
           </>
         ) : (
           <Link as={ReachLink} to={'/auth'}>
-            <Button w={'80px'} colorScheme="purple">
+            <Button w={'80px'} colorScheme="cyan">
               Log in
             </Button>
           </Link>
