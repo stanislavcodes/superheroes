@@ -36,21 +36,38 @@ export const Home = () => {
         Welcome to Heroes 👋!
       </Heading>
 
-      {!isSignedIn && (
-        <Heading as={'h2'} size={'md'} textAlign={'center'} color={'cyan.500'}>
-          Please sign in to use all features
-        </Heading>
-      )}
-
       <SuperheroesList isLoading={isLoading} superheroes={superheroes ?? []} />
 
-      <Pagination
-        currentPage={page}
-        totalPages={pages}
-        nextPage={nextPage}
-        prevPage={prevPage}
-        isLoading={isLoading}
-      />
+      {pages > 1 && (
+        <Pagination
+          currentPage={page}
+          totalPages={pages}
+          nextPage={nextPage}
+          prevPage={prevPage}
+          isLoading={isLoading}
+        />
+      )}
+
+      {!isLoading && !superheroes && (
+        <>
+          <Heading as={'h2'} textAlign={'center'} my={'auto'}>
+            {'No heroes yet! 😔'}
+            <br />
+            {'But you can add them!'}
+          </Heading>
+
+          {!isSignedIn && (
+            <Heading
+              as={'h2'}
+              size={'md'}
+              textAlign={'center'}
+              color={'cyan.500'}
+            >
+              Please sign in to use all features
+            </Heading>
+          )}
+        </>
+      )}
     </Flex>
   );
 };

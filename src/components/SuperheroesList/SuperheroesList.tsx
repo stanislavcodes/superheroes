@@ -14,6 +14,7 @@ export const SuperheroesList = ({
 }: SuperheroesListProps) => {
   return (
     <Grid
+      my={'auto'}
       w={'100%'}
       templateColumns={{
         base: 'minmax(300px, 1fr)',
