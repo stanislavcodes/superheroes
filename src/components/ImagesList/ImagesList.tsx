@@ -1,4 +1,6 @@
-import { Grid,Image } from '@chakra-ui/react';
+import { Grid, Image } from '@chakra-ui/react';
+import anonymous from '~/assets/anonymous.png';
+
 interface ImagesListProps {
   images: string[];
 }
@@ -9,22 +11,40 @@ export const ImagesList = ({ images }: ImagesListProps) => {
   return (
     <Grid
       minW={'280px'}
-      maxW={'100%'}
-      gridTemplateColumns={`repeat(${images.length}, 1fr)`}
+      maxW={images.length === 1 ? '50%' : '100%'}
+      gridTemplateColumns={`repeat(${images.length || 1}, 1fr)`}
       gridTemplateRows={`min-content`}
+      justifyItems={'center'}
       gap={4}
     >
-      {finalImages.map(image => (
-        <Image
-          key={image}
-          rounded={'lg'}
-          flexGrow={1}
-          h={'100%'}
-          objectFit="cover"
-          src={image}
-          alt="Chakra UI"
-        />
-      ))}
+      {finalImages.length ? (
+        <>
+          {finalImages.map(image => (
+            <Image
+              key={image}
+              rounded={'lg'}
+              flexGrow={1}
+              h={'100%'}
+              objectFit="cover"
+              src={image}
+              alt="Superhero image"
+              fallbackSrc={anonymous}
+            />
+          ))}
+        </>
+      ) : (
+        <>
+          <Image
+            rounded={'lg'}
+            flexGrow={1}
+            h={'100%'}
+            maxW={'60%'}
+            objectFit="cover"
+            src={anonymous}
+            alt="Superhero image"
+          />
+        </>
+      )}
     </Grid>
   );
 };

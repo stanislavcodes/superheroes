@@ -29,7 +29,9 @@ export const Header = ({ toggleSidebar }: HeaderProps) => {
         <Flex align={'center'} gap={2}>
           <Image src={logo} alt="logo" maxH={30} />
 
-          <Heading size={'lg'}>Heroes</Heading>
+          <Heading size={'lg'} display={{ base: 'none', sm: 'block' }}>
+            Heroes
+          </Heading>
         </Flex>
       </ReachLink>
 

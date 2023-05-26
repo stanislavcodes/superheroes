@@ -46,10 +46,14 @@ export const Superhero = () => {
   }, [isSuccess, isLoading, data]);
 
   return (
-    <Container as={'main'} py={6} maxW={{ base: '90%', md: '80%', lg: '50%' }}>
+    <Container
+      as={'main'}
+      py={6}
+      maxW={{ base: '100%', md: '80%', lg: '50%' }}
+    >
       <VStack spacing={4} mb={6}>
         {IsEditing && data ? (
-          <Box w={{ base: '100%', md: '65%' }}>
+          <Box w={{ base: '100%', lg: '80%' }}>
             <EditForm hero={data} onCancel={handleCancelEdit} />
           </Box>
         ) : (

@@ -14,11 +14,11 @@ export const AppLayout = () => {
   return (
     <Flex flexDirection="column" minHeight="100vh">
       <>
-      <Header toggleSidebar={toggleSidebar} />
+        <Header toggleSidebar={toggleSidebar} />
 
-      <Outlet />
+        <Outlet />
 
-      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+        <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       </>
     </Flex>
   );

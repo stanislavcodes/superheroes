@@ -36,6 +36,7 @@ export const SuperheroCard = ({ superhero }: SuperheroCardProps) => {
             h={'100%'}
             src={superhero.images[0] || anonymous}
             alt={`${nickname} image`}
+            fallbackSrc={anonymous}
           />
         </CardBody>
 
