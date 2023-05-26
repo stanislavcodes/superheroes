@@ -4,7 +4,7 @@ import { useAuthContext } from '~/contexts/AuthContext';
 import { supabase } from '~/utils/supabase';
 
 type StorageContextProps = {
-  upload: (file: File) => Promise<string>;
+  upload: (files: File[]) => Promise<string[]>;
   remove: (paths: string[]) => Promise<void>;
   isLoading: boolean;
 };
@@ -46,6 +46,26 @@ export const StorageContextProvider = ({
     }
   };
 
+  const uploadImages = async (files: File[]) => {
+    const resultImages: string[] = [];
+
+    try {
+      setIsLoading(true);
+
+      for (const file of files) {
+        const imageUrl = await uploadImage(file);
+
+        resultImages.push(imageUrl);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+
+    return resultImages;
+  };
+
   const deleteImages = async (imagePaths: string[]) => {
     try {
       setIsLoading(true);
@@ -60,7 +80,7 @@ export const StorageContextProvider = ({
   return (
     <StorageContext.Provider
       value={{
-        upload: uploadImage,
+        upload: uploadImages,
         remove: deleteImages,
         isLoading,
       }}
