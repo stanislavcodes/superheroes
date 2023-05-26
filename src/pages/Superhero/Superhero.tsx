@@ -7,11 +7,13 @@ import {
   Link,
   Text,
   VStack,
+  useDisclosure,
 } from '@chakra-ui/react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDeleteHero } from '~/api/useDeleteHero';
 import { useGetHero } from '~/api/useGetHero';
+import { ConfirmDialog } from '~/components/ConfirmDialog';
 import { EditForm } from '~/components/EditForm/EditForm';
 import { ImagesList } from '~/components/ImagesList';
 import { SuperheroPageSkeleton } from '~/components/SuperheroPageSkeleton';
@@ -22,6 +24,9 @@ export const Superhero = () => {
   const { isSignedIn } = useAuthContext();
   const navigate = useNavigate();
   const [IsEditing, setIsEditing] = useState(false);
+
+  const { isOpen: isRemoveConfirmationOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef(null);
 
   const { data, isLoading, isSuccess, refetch } = useGetHero(id);
   const { mutate: deleteHero, isLoading: isRemoving } = useDeleteHero();
@@ -46,11 +51,7 @@ export const Superhero = () => {
   }, [isSuccess, isLoading, data]);
 
   return (
-    <Container
-      as={'main'}
-      py={6}
-      maxW={{ base: '100%', md: '80%', lg: '50%' }}
-    >
+    <Container as={'main'} py={6} maxW={{ base: '100%', md: '80%', lg: '50%' }}>
       <VStack spacing={4} mb={6}>
         {IsEditing && data ? (
           <Box w={{ base: '100%', lg: '80%' }}>
@@ -112,7 +113,7 @@ export const Superhero = () => {
                   </Button>
 
                   <Button
-                    onClick={handleRemove}
+                    onClick={onOpen}
                     flex="1"
                     variant="ghost"
                     isDisabled={!isSignedIn}
@@ -134,6 +135,15 @@ export const Superhero = () => {
           </>
         )}
       </VStack>
+
+      <ConfirmDialog
+        isOpen={isRemoveConfirmationOpen}
+        onClose={onClose}
+        onConfirm={handleRemove}
+        question={`Delete ${data?.nickname}?`}
+        description="Are you sure? You can't undo this action afterwards."
+        cancelRef={cancelRef}
+      />
     </Container>
   );
 };
