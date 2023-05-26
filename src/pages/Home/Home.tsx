@@ -1,10 +1,12 @@
-import { Flex } from '@chakra-ui/react';
+import { Flex, Heading } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { useGetHeroes } from '~/api/useGetHeroes';
 import { Pagination } from '~/components/Pagination';
 import { SuperheroesList } from '~/components/SuperheroesList';
+import { useAuthContext } from '~/contexts/AuthContext';
 
 export const Home = () => {
+  const { isSignedIn } = useAuthContext();
   const {
     data: superheroes,
     isLoading,
@@ -30,6 +32,16 @@ export const Home = () => {
       justify={'space-between'}
       minH={'calc(100vh - 80px)'}
     >
+      <Heading as={'h1'} size={'lg'} textAlign={'center'}>
+        Welcome to Heroes 👋!
+      </Heading>
+
+      {!isSignedIn && (
+        <Heading as={'h2'} size={'md'} textAlign={'center'} color={'cyan.500'}>
+          Please sign in to use all features
+        </Heading>
+      )}
+
       <SuperheroesList isLoading={isLoading} superheroes={superheroes ?? []} />
 
       <Pagination

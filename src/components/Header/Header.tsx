@@ -9,11 +9,8 @@ interface HeaderProps {
 }
 
 export const Header = ({ toggleSidebar }: HeaderProps) => {
-  const { isSignedIn, session, logOut } = useAuthContext();
+  const { isSignedIn, logOut } = useAuthContext();
   const btnRef = useRef(null);
-
-  console.log('isSignedIn', isSignedIn);
-  console.log('session', session);
 
   return (
     <Flex
@@ -45,7 +42,7 @@ export const Header = ({ toggleSidebar }: HeaderProps) => {
               variant={'outline'}
               colorScheme="cyan"
             >
-              Log out
+              Sign out
             </Button>
 
             <Button ref={btnRef} onClick={toggleSidebar} colorScheme="cyan">
@@ -55,7 +52,7 @@ export const Header = ({ toggleSidebar }: HeaderProps) => {
         ) : (
           <Link as={ReachLink} to={'/auth'}>
             <Button w={'80px'} colorScheme="cyan">
-              Log in
+              Sign in
             </Button>
           </Link>
         )}
