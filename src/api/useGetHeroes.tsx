@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useEffect,useState } from 'react';
+import { useState } from 'react';
 import { Superhero } from '~/types/Superhero';
 import { SuperheroesCount } from '~/types/SuperheroesCount';
 import { get } from '~/utils/requests';
@@ -8,10 +8,6 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 export const useGetHeroes = () => {
   const [page, setPage] = useState(1);
-
-  useEffect(() => {
-    console.log(page);
-  }, [page]);
 
   const prevPage = () => {
     if (page > 1) {
@@ -44,7 +40,9 @@ export const useGetHeroes = () => {
     page,
     prevPage,
     nextPage,
-    refetchHeroes: heroesQuery.refetch,
-    refetchCount: refetch,
+    refetchHeroes: () => {
+      refetch();
+      heroesQuery.refetch();
+    }
   };
 };

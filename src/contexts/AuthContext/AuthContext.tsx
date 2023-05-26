@@ -1,6 +1,6 @@
 import { AuthError, Session } from '@supabase/supabase-js';
 import { FC, createContext, useContext, useEffect, useState } from 'react';
-import { supabase } from '~/utils/supabaseCilent';
+import { supabase } from '~/utils/supabase';
 
 type AuthContextProps = {
   session: Session | null;
