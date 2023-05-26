@@ -6,6 +6,7 @@ import { RouterProvider } from 'react-router-dom';
 import AppRouter from '~/AppRouter';
 import { AuthContextProvider } from '~/contexts/AuthContext';
 import './index.css';
+import { StorageContextProvider } from './contexts/StorageContext';
 
 const queryClient = new QueryClient();
 
@@ -13,9 +14,11 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <AuthContextProvider>
-        <ChakraProvider>
-          <RouterProvider router={AppRouter} />
-        </ChakraProvider>
+        <StorageContextProvider>
+          <ChakraProvider>
+            <RouterProvider router={AppRouter} />
+          </ChakraProvider>
+        </StorageContextProvider>
       </AuthContextProvider>
     </QueryClientProvider>
   </React.StrictMode>,
