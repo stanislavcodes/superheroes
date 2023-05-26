@@ -1,20 +1,14 @@
-import {
-Button,
-Flex,
-FormControl,
-FormLabel,
-Heading,
-Input,
-Textarea,
-VStack,
-} from '@chakra-ui/react';
-import { useFormik } from 'formik';
+import { Button, Flex, Heading, VStack } from '@chakra-ui/react';
+import { Formik } from 'formik';
 import { useState } from 'react';
 import { useGetHeroes } from '~/api/useGetHeroes';
 import { useUpdateHero } from '~/api/useUpdateHero';
+import { Alert } from '~/components/Alert';
+import { FormTextInput } from '~/components/FormTextInput';
+import { FormTextarea } from '~/components/FormTextarea';
+import { FormUploadings } from '~/components/FormUploadings';
+import { useStorageContext } from '~/contexts/StorageContext';
 import { type Superhero } from '~/types/Superhero';
-import { Alert } from '../Alert';
-import { ImagesList } from '../ImagesList';
 
 interface EditFormProps {
   hero: Superhero;
@@ -22,52 +16,57 @@ interface EditFormProps {
 }
 
 export const EditForm = ({ hero, onCancel }: EditFormProps) => {
-  const { refetchHeroes, refetchCount } = useGetHeroes();
-  const [isSuccessAlert, setIsSuccessAlert] = useState(false);
-  const {
-    nickname,
-    real_name,
-    origin_description,
-    superpowers,
-    catch_phrase,
-    images,
-    id,
-  } = hero;
+  const { refetchHeroes } = useGetHeroes();
+  const [imageOne, setImageOne] = useState<File | null>(null);
+  const [imageTwo, setImageTwo] = useState<File | null>(null);
+  const [imageThree, setImageThree] = useState<File | null>(null);
+  const [imagesToRemove, setImagesToRemove] = useState<string[]>([]);
 
-  const formik = useFormik({
-    initialValues: {
-      nickname: nickname,
-      realName: real_name,
-      catchPhrase: catch_phrase,
-      originDescription: origin_description,
-      superpowers: superpowers,
-    },
-    onSubmit: values => {
-      handleUpdate({
-        nickname: values.nickname,
-        real_name: values.realName,
-        origin_description: values.originDescription,
-        superpowers: values.superpowers,
-        catch_phrase: values.catchPhrase,
-        images,
-        id,
-      });
-    },
-  });
+  const addToImagesToRemove = (image: string) => {
+    setImagesToRemove([...imagesToRemove, image]);
+  };
+
+  const [isSuccessAlert, setIsSuccessAlert] = useState(false);
 
   const onSuccessfulSubmit = () => {
     setIsSuccessAlert(true);
-    refetchCount();
     refetchHeroes();
 
     setTimeout(() => {
       setIsSuccessAlert(false);
       onCancel();
     }, 2000);
-    formik.resetForm();
   };
 
-  const { mutate: updateHero, isLoading } = useUpdateHero(onSuccessfulSubmit);
+  const { upload, remove } = useStorageContext();
+
+  const handleUploadImages = async (): Promise<string[]> => {
+    const imageVariables = [imageOne, imageTwo, imageThree];
+    const files = imageVariables.filter(Boolean) as File[];
+
+    try {
+      const imagesURLs = await upload(files);
+
+      if (imagesToRemove.length > 0) {
+        await remove(imagesToRemove);
+      }
+
+      const prevImages = hero.images.filter(
+        image =>
+          !imagesToRemove.some(imageToRemove => {
+            return image.includes(imageToRemove);
+          }),
+      );
+
+      return [...prevImages, ...imagesURLs];
+    } catch (error) {
+      console.log(error);
+    }
+
+    return [];
+  };
+
+  const { mutate: updateHero } = useUpdateHero(onSuccessfulSubmit);
 
   const handleUpdate = (heroData: Superhero) => {
     updateHero(heroData);
@@ -77,142 +76,139 @@ export const EditForm = ({ hero, onCancel }: EditFormProps) => {
     onCancel();
   };
 
+  const initialValues = {
+    nickname: hero.nickname,
+    realName: hero.real_name,
+    catchPhrase: hero.catch_phrase,
+    originDescription: hero.origin_description,
+    superpowers: hero.superpowers,
+  };
+
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <VStack
-        spacing={4}
-        align="center"
-        bg={'white'}
-        rounded={'md'}
-        height={'100%'}
-      >
-        {isSuccessAlert ? (
-          <Alert
-            status="success"
-            description="Thanks for adding new heroes. I believe you can add even more!"
-            message="Successfully updated!"
-          />
-        ) : (
-          <>
-            <Heading color="cyan.500">Update a hero</Heading>
-            <ImagesList
-              images={[
-                'https://images.lifestyleasia.com/wp-content/uploads/sites/7/2022/02/28155940/The-Batman-1.jpg',
-                'https://media.cnn.com/api/v1/images/stellar/prod/211227135008-02-the-batman-trailer.jpg?c=4x3',
-                'https://sportshub.cbsistatic.com/i/2022/03/05/cc3cdf98-8d25-4809-ac00-b60729ecb46b/the-batman-movie-robert-pattinson.jpg',
-              ]}
-            />
+    <Formik
+      initialValues={initialValues}
+      onSubmit={async values => {
+        const publicImageUrls = await handleUploadImages();
 
-            <FormControl isRequired isDisabled={isLoading}>
-              <FormLabel htmlFor="nickname">Nickname:</FormLabel>
+        handleUpdate({
+          nickname: values.nickname,
+          real_name: values.realName,
+          origin_description: values.originDescription,
+          superpowers: values.superpowers,
+          catch_phrase: values.catchPhrase,
+          images: [...publicImageUrls],
+          id: hero.id,
+        });
+      }}
+    >
+      {props => {
+        const { isSubmitting } = props;
 
-              <Input
-                focusBorderColor="cyan.500"
-                id="nickname"
-                type="text"
-                name="nickname"
-                bg={'gray.100'}
-                variant={'filled'}
-                onChange={formik.handleChange}
-                value={formik.values.nickname}
-              />
-            </FormControl>
-
-            <FormControl isRequired isDisabled={isLoading}>
-              <FormLabel htmlFor="realName">Real Name:</FormLabel>
-
-              <Input
-                focusBorderColor="cyan.500"
-                id="realName"
-                type="text"
-                name="realName"
-                bg={'gray.100'}
-                variant={'filled'}
-                onChange={formik.handleChange}
-                value={formik.values.realName}
-              />
-            </FormControl>
-
-            <FormControl isRequired isDisabled={isLoading}>
-              <FormLabel htmlFor="catchPhrase">Catch phrase:</FormLabel>
-
-              <Input
-                focusBorderColor="cyan.500"
-                id="catchPhrase"
-                type="text"
-                name="catchPhrase"
-                bg={'gray.100'}
-                variant={'filled'}
-                onChange={formik.handleChange}
-                value={formik.values.catchPhrase}
-              />
-            </FormControl>
-
-            <FormControl isRequired isDisabled={isLoading}>
-              <FormLabel htmlFor="originDescription">
-                Origin description:
-              </FormLabel>
-              <Textarea
-                id="originDescription"
-                placeholder="Where is your hero from?"
-                name="originDescription"
-                minH={24}
-                maxH={36}
-                bg={'gray.100'}
-                variant={'filled'}
-                onChange={formik.handleChange}
-                value={formik.values.originDescription}
-              />
-            </FormControl>
-
-            <FormControl isRequired isDisabled={isLoading}>
-              <FormLabel htmlFor="superpowers">Superpowers:</FormLabel>
-              <Textarea
-                id="superpowers"
-                placeholder="What are the superpowers of you your hero?"
-                name="superpowers"
-                minH={24}
-                maxH={36}
-                bg={'gray.100'}
-                variant={'filled'}
-                onChange={formik.handleChange}
-                value={formik.values.superpowers}
-              />
-            </FormControl>
-
-            <Flex
-              w={'100%'}
-              direction={{ base: 'column', md: 'row' }}
-              justify={'center'}
-              gap={4}
-              sx={{
-                '& > button': {
-                  width: { base: '100%', md: 120 },
-                },
-              }}
+        return (
+          <form onSubmit={props.handleSubmit}>
+            <VStack
+              spacing={4}
+              align="center"
+              bg={'white'}
+              rounded={'md'}
+              height={'100%'}
             >
-              <Button
-                type="submit"
-                colorScheme="cyan"
-                width="full"
-                isLoading={isLoading}
-                loadingText="Updating"
-              >
-                Update
-              </Button>
-              <Button
-                colorScheme="cyan"
-                width="full"
-                variant={'outline'}
-                loadingText="Creating"
-                onClick={handleCancel}
-              >
-                Cancel
-              </Button>
-            </Flex>
-          </>
-        )}
-      </VStack>
-    </form>
+              {isSuccessAlert ? (
+                <Alert
+                  status="success"
+                  description="Thanks for adding new heroes. I believe you can add even more!"
+                  message="Successfully updated!"
+                />
+              ) : (
+                <>
+                  <Heading color="cyan.500">Update a hero</Heading>
+
+                  <FormUploadings
+                    addImageOne={setImageOne}
+                    addImageTwo={setImageTwo}
+                    addImageThree={setImageThree}
+                    addToImagesToRemove={addToImagesToRemove}
+                    images={hero.images}
+                    isLoading={isSubmitting}
+                  />
+
+                  <FormTextInput
+                    onChange={props.handleChange}
+                    value={props.values.nickname}
+                    name="nickname"
+                    label="Nickname"
+                    isLoading={isSubmitting}
+                  />
+
+                  <FormTextInput
+                    onChange={props.handleChange}
+                    value={props.values.realName}
+                    name="realName"
+                    label="Real name"
+                    isLoading={isSubmitting}
+                  />
+
+                  <FormTextInput
+                    onChange={props.handleChange}
+                    value={props.values.catchPhrase}
+                    name="catchPhrase"
+                    label="Catch phrase"
+                    isLoading={isSubmitting}
+                  />
+
+                  <FormTextarea
+                    onChange={props.handleChange}
+                    value={props.values.originDescription}
+                    name="originDescription"
+                    label="Origin description"
+                    isLoading={isSubmitting}
+                    placeholder="Where is your hero from?"
+                  />
+
+                  <FormTextarea
+                    onChange={props.handleChange}
+                    value={props.values.superpowers}
+                    name="superpowers"
+                    label="Superpowers"
+                    isLoading={isSubmitting}
+                    placeholder="What are the superpowers of you your hero?"
+                  />
+
+                  <Flex
+                    w={'100%'}
+                    direction={{ base: 'column', md: 'row' }}
+                    justify={'center'}
+                    gap={4}
+                    sx={{
+                      '& > button': {
+                        width: { base: '100%', md: 120 },
+                      },
+                    }}
+                  >
+                    <Button
+                      type="submit"
+                      colorScheme="cyan"
+                      width="full"
+                      isLoading={isSubmitting}
+                      loadingText="Updating"
+                    >
+                      Update
+                    </Button>
+                    <Button
+                      colorScheme="cyan"
+                      width="full"
+                      variant={'outline'}
+                      onClick={handleCancel}
+                    >
+                      Cancel
+                    </Button>
+                  </Flex>
+                </>
+              )}
+            </VStack>
+          </form>
+        );
+      }}
+    </Formik>
   );
 };
