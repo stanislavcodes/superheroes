@@ -24,6 +24,7 @@ export const useGetHeroes = () => {
   const { data: heroesCount = { count: 0 }, refetch } = useQuery({
     queryKey: ['heroes-count'],
     queryFn: () => get<SuperheroesCount>(`${API_URL}/superheroes/count`),
+    refetchOnWindowFocus: false,
   });
 
   const pages = Math.ceil(heroesCount.count / 5);
