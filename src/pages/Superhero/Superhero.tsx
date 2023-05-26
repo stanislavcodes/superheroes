@@ -120,7 +120,7 @@ export const Superhero = () => {
                 {!isSignedIn && (
                   <Text fontWeight={'medium'}>
                     <Link color={'cyan.500'} href={'/auth'}>
-                      Log in
+                      Sign in
                     </Link>{' '}
                     to edit or delete heroes
                   </Text>
