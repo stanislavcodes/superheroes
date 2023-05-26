@@ -9,6 +9,7 @@ import {
   Link,
 } from '@chakra-ui/react';
 import { Link as ReachLink } from 'react-router-dom';
+import anonymous from '~/assets/anonymous.png';
 import { Superhero } from '~/types/Superhero';
 
 interface SuperheroCardProps {
@@ -32,8 +33,9 @@ export const SuperheroCard = ({ superhero }: SuperheroCardProps) => {
             objectFit="cover"
             rounded={'lg'}
             maxW={{ base: '100%', md: '100%' }}
-            src="https://images.lifestyleasia.com/wp-content/uploads/sites/7/2022/02/28155940/The-Batman-1.jpg"
-            alt="Chakra UI"
+            h={'100%'}
+            src={superhero.images[0] || anonymous}
+            alt={`${nickname} image`}
           />
         </CardBody>
 
