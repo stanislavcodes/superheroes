@@ -62,15 +62,11 @@ export const Superhero = () => {
                   {data?.nickname}
                 </Heading>
 
-                <Box>
-                  <ImagesList
-                    images={[
-                      'https://images.lifestyleasia.com/wp-content/uploads/sites/7/2022/02/28155940/The-Batman-1.jpg',
-                      'https://media.cnn.com/api/v1/images/stellar/prod/211227135008-02-the-batman-trailer.jpg?c=4x3',
-                      'https://sportshub.cbsistatic.com/i/2022/03/05/cc3cdf98-8d25-4809-ac00-b60729ecb46b/the-batman-movie-robert-pattinson.jpg',
-                    ]}
-                  />
-                </Box>
+                <Heading as="h3" size="sm">
+                  {data?.catch_phrase}
+                </Heading>
+
+                <ImagesList images={data?.images || []} />
 
                 <Heading as="h2" size="md">
                   {data?.real_name}

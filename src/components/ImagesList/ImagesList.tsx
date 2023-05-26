@@ -1,10 +1,11 @@
 import { Grid,Image } from '@chakra-ui/react';
-
 interface ImagesListProps {
   images: string[];
 }
 
 export const ImagesList = ({ images }: ImagesListProps) => {
+  const finalImages = images.length > 3 ? images.slice(0, 3) : images;
+
   return (
     <Grid
       minW={'280px'}
@@ -13,7 +14,7 @@ export const ImagesList = ({ images }: ImagesListProps) => {
       gridTemplateRows={`min-content`}
       gap={4}
     >
-      {images.map(image => (
+      {finalImages.map(image => (
         <Image
           key={image}
           rounded={'lg'}
