@@ -1,10 +1,11 @@
+import { ArrowLeftIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
+  Link as ChakraLink,
   Container,
   Flex,
   Heading,
-  Link,
   Text,
   VStack,
   useDisclosure,
@@ -18,6 +19,8 @@ import { EditForm } from '~/components/EditForm/EditForm';
 import { ImagesList } from '~/components/ImagesList';
 import { SuperheroPageSkeleton } from '~/components/SuperheroPageSkeleton';
 import { useAuthContext } from '~/contexts/AuthContext';
+
+import { Link } from 'react-router-dom';
 
 export const Superhero = () => {
   const { id = '' } = useParams();
@@ -51,8 +54,23 @@ export const Superhero = () => {
   }, [isSuccess, isLoading, data]);
 
   return (
-    <Container as={'main'} py={6} maxW={{ base: '100%', md: '80%', lg: '50%' }}>
-      <VStack spacing={4} mb={6}>
+    <Container
+      as={'main'}
+      py={6}
+      maxW={{ base: '100%', md: '80%', xl: '50%', '4xl': '40%' }}
+    >
+      <ChakraLink
+        as={Link}
+        to={'/'}
+        color={'cyan.500'}
+        mb={6}
+        fontWeight={'medium'}
+      >
+        <ArrowLeftIcon mr={2} />
+        Back to home
+      </ChakraLink>
+
+      <VStack spacing={{ base: 4, '2xl': 6 }} mb={6}>
         {IsEditing && data ? (
           <Box w={{ base: '100%', lg: '80%' }}>
             <EditForm hero={data} onCancel={handleCancelEdit} />
@@ -90,7 +108,7 @@ export const Superhero = () => {
                 </Heading>
 
                 <Text minW={'280px'} fontSize="md">
-                  {data?.origin_description}
+                  {data?.superpowers}
                 </Text>
 
                 <Flex
@@ -124,9 +142,9 @@ export const Superhero = () => {
 
                 {!isSignedIn && (
                   <Text fontWeight={'medium'}>
-                    <Link color={'cyan.500'} href={'/auth'}>
+                    <ChakraLink as={Link} color={'cyan.500'} to={'/auth'}>
                       Sign in
-                    </Link>{' '}
+                    </ChakraLink>{' '}
                     to edit or delete heroes
                   </Text>
                 )}

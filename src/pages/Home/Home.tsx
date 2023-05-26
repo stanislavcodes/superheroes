@@ -1,4 +1,4 @@
-import { Flex, Heading } from '@chakra-ui/react';
+import { Box, Container, Flex, Heading } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { useGetHeroes } from '~/api/useGetHeroes';
 import { Pagination } from '~/components/Pagination';
@@ -24,50 +24,57 @@ export const Home = () => {
   }, [page]);
 
   return (
-    <Flex
-      p={6}
-      gap={6}
-      direction={'column'}
-      as="main"
-      justify={'space-between'}
-      minH={'calc(100vh - 80px)'}
-    >
-      <Heading as={'h1'} size={'lg'} textAlign={'center'}>
-        Welcome to Heroes 👋!
-      </Heading>
-
-      <SuperheroesList isLoading={isLoading} superheroes={superheroes ?? []} />
-
-      {pages > 1 && (
-        <Pagination
-          currentPage={page}
-          totalPages={pages}
-          nextPage={nextPage}
-          prevPage={prevPage}
-          isLoading={isLoading}
-        />
-      )}
-
-      {!isLoading && !superheroes && (
-        <>
-          <Heading as={'h2'} textAlign={'center'} my={'auto'}>
-            {'No heroes yet! 😔'}
-            <br />
-            {'But you can add them!'}
+    <Box as="main">
+      <Container maxW={{ base: '100%', '4xl': '50%' }}>
+        <Flex
+          p={6}
+          gap={6}
+          direction={'column'}
+          as="main"
+          justify={'space-between'}
+          minH={'calc(100vh - 80px)'}
+        >
+          <Heading as={'h1'} size={'lg'} textAlign={'center'}>
+            Welcome to Heroes 👋!
           </Heading>
 
-          {!isSignedIn && (
-            <Heading
-              as={'h2'}
-              size={'md'}
-              textAlign={'center'}
-              color={'cyan.500'}
-            >
-              Please sign in to use all features
-            </Heading>
+          <SuperheroesList
+            isLoading={isLoading}
+            superheroes={superheroes ?? []}
+          />
+
+          {pages > 1 && (
+            <Pagination
+              currentPage={page}
+              totalPages={pages}
+              nextPage={nextPage}
+              prevPage={prevPage}
+              isLoading={isLoading}
+            />
           )}
-        </>
-      )}
-    </Flex>
+
+          {!isLoading && !superheroes && (
+            <>
+              <Heading as={'h2'} textAlign={'center'} my={'auto'}>
+                {'No heroes yet! 😔'}
+                <br />
+                {'But you can add them!'}
+              </Heading>
+
+              {!isSignedIn && (
+                <Heading
+                  as={'h2'}
+                  size={'md'}
+                  textAlign={'center'}
+                  color={'cyan.500'}
+                >
+                  Please sign in to use all features
+                </Heading>
+              )}
+            </>
+          )}
+        </Flex>
+      </Container>
+    </Box>
   );
 };

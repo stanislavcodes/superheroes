@@ -1,4 +1,4 @@
-import { Grid, Image } from '@chakra-ui/react';
+import { Grid,Image } from '@chakra-ui/react';
 import anonymous from '~/assets/anonymous.png';
 
 interface ImagesListProps {
@@ -24,7 +24,9 @@ export const ImagesList = ({ images }: ImagesListProps) => {
               key={image}
               rounded={'lg'}
               flexGrow={1}
+              aspectRatio={1 / 1}
               h={'100%'}
+              maxH={'30vh'}
               objectFit="cover"
               src={image}
               alt="Superhero image"

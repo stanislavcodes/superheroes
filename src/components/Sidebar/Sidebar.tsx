@@ -8,7 +8,7 @@ import {
   DrawerOverlay,
   useDisclosure,
 } from '@chakra-ui/react';
-import { CreateForm } from '../CreateForm';
+import { CreateForm } from '~/components/CreateForm';
 
 interface SidebarProps {
   toggleSidebar: () => void;
@@ -24,17 +24,27 @@ export const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
   };
 
   return (
-    <Drawer size="lg" isOpen={isOpen} placement="right" onClose={handleClose}>
+    <Drawer
+      size={{ base: 'full', md: 'lg', '4xl': 'xl' }}
+      isOpen={isOpen}
+      placement="right"
+      onClose={handleClose}
+    >
       <DrawerOverlay />
       <DrawerContent>
-        <DrawerCloseButton />
+        <DrawerCloseButton right={2} top={2} zIndex={999} bg={'gray.100'} />
 
         <DrawerBody>
           <CreateForm />
         </DrawerBody>
 
         <DrawerFooter>
-          <Button variant="outline" mr={3} onClick={handleClose}>
+          <Button
+            variant="outline"
+            mr={3}
+            onClick={handleClose}
+            size={{ base: 'md', '4xl': 'lg' }}
+          >
             Cancel
           </Button>
         </DrawerFooter>
