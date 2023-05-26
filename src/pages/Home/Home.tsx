@@ -1,4 +1,4 @@
-import { Box, Container, Flex, Heading } from '@chakra-ui/react';
+import { Box,Container,Flex,Heading } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { useGetHeroes } from '~/api/useGetHeroes';
 import { Pagination } from '~/components/Pagination';
@@ -38,21 +38,6 @@ export const Home = () => {
             Welcome to Heroes 👋!
           </Heading>
 
-          <SuperheroesList
-            isLoading={isLoading}
-            superheroes={superheroes ?? []}
-          />
-
-          {pages > 1 && (
-            <Pagination
-              currentPage={page}
-              totalPages={pages}
-              nextPage={nextPage}
-              prevPage={prevPage}
-              isLoading={isLoading}
-            />
-          )}
-
           {!isLoading && !superheroes && (
             <>
               <Heading as={'h2'} textAlign={'center'} my={'auto'}>
@@ -72,6 +57,21 @@ export const Home = () => {
                 </Heading>
               )}
             </>
+          )}
+          
+          <SuperheroesList
+            isLoading={isLoading}
+            superheroes={superheroes ?? []}
+          />
+
+          {pages > 1 && (
+            <Pagination
+              currentPage={page}
+              totalPages={pages}
+              nextPage={nextPage}
+              prevPage={prevPage}
+              isLoading={isLoading}
+            />
           )}
         </Flex>
       </Container>
