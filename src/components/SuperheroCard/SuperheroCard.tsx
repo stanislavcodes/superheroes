@@ -33,7 +33,8 @@ export const SuperheroCard = ({ superhero }: SuperheroCardProps) => {
             objectFit="cover"
             rounded={'lg'}
             maxW={{ base: '100%', md: '100%' }}
-            h={'100%'}
+            w={'100%'}
+            aspectRatio={1 / 1}
             src={superhero.images[0] || anonymous}
             alt={`${nickname} image`}
             fallbackSrc={anonymous}
