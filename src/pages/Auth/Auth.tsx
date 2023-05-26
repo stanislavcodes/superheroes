@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import { Link as ReachLink, useNavigate } from 'react-router-dom';
 import { Alert } from '~/components/Alert';
 import { useAuthContext } from '~/contexts/AuthContext';
-import { supabase } from '~/utils/supabaseCilent';
+import { supabase } from '~/utils/supabase';
 
 export const Auth = () => {
   const { isSignedIn } = useAuthContext();
