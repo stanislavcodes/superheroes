@@ -7,7 +7,7 @@ import {
   Spinner,
   Text,
 } from '@chakra-ui/react';
-import { ChangeEvent, Dispatch, createRef, useState } from 'react';
+import { ChangeEvent, Dispatch, createRef, useEffect, useState } from 'react';
 
 interface ImageUploaderProps {
   addImage: Dispatch<React.SetStateAction<File | null>>;
@@ -26,6 +26,10 @@ export const ImageUploader = ({
   const [previewImage, setPreviewImage] = useState<string | null>(
     defaultImage ?? null,
   );
+
+  useEffect(() => {
+    setPreviewImage(defaultImage ?? null);
+  }, [isLoading]);
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

@@ -21,22 +21,31 @@ import { SuperheroPageSkeleton } from '~/components/SuperheroPageSkeleton';
 import { useAuthContext } from '~/contexts/AuthContext';
 
 import { Link } from 'react-router-dom';
+import { useStorageContext } from '~/contexts/StorageContext';
 
 export const Superhero = () => {
   const { id = '' } = useParams();
   const { isSignedIn } = useAuthContext();
+  const { remove } = useStorageContext();
   const navigate = useNavigate();
   const [IsEditing, setIsEditing] = useState(false);
-
   const { isOpen: isRemoveConfirmationOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef(null);
 
   const { data, isLoading, isSuccess, refetch } = useGetHero(id);
   const { mutate: deleteHero, isLoading: isRemoving } = useDeleteHero();
 
-  const handleRemove = () => {
+  const handleRemove = async () => {
     if (isSignedIn) {
       deleteHero(id);
+
+      if (data?.images) {
+        const names = data.images.map(path => {
+          return path.split('/').pop() ?? '';
+        });
+
+        await remove(names);
+      }
     } else {
       navigate('/auth');
     }

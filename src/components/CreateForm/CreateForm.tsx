@@ -25,6 +25,9 @@ export const CreateForm = () => {
       duration: 2000,
       position: 'top-left',
     });
+    setImageOne(null);
+    setImageTwo(null);
+    setImageThree(null);
     refetchHeroes();
   };
 
