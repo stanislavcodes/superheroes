@@ -1,4 +1,4 @@
-import { createContext,useContext,useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useAuthContext } from '~/contexts/AuthContext';
 import { supabase } from '~/utils/supabase';
@@ -35,7 +35,7 @@ export const StorageContextProvider = ({
       const { data } = await supabase.storage
         .from('images')
         .getPublicUrl(filename);
-      
+
       return data?.publicUrl || '';
     } catch (error) {
       console.log(error);
@@ -70,6 +70,7 @@ export const StorageContextProvider = ({
     try {
       setIsLoading(true);
       await supabase.storage.from('images').remove(imagePaths);
+
     } catch (error) {
       console.log(error);
     } finally {
