@@ -16,10 +16,8 @@ export const FormTextInput = ({
   isLoading,
 }: FormTextInputProps) => {
   return (
-    <FormControl isRequired isDisabled={isLoading}>
-      <FormLabel htmlFor={name}>
-        {label}
-      </FormLabel>
+    <FormControl isRequired isDisabled={isLoading} flexGrow={1}>
+      <FormLabel htmlFor={name}>{label}</FormLabel>
 
       <Input
         focusBorderColor="cyan.500"

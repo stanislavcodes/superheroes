@@ -1,4 +1,4 @@
-import { Button, Heading, VStack } from '@chakra-ui/react';
+import { Button,Flex,Heading,VStack,useToast } from '@chakra-ui/react';
 import { Formik } from 'formik';
 import { useState } from 'react';
 import { useCreateHero } from '~/api/useCreateHero';
@@ -6,7 +6,6 @@ import { useGetHeroes } from '~/api/useGetHeroes';
 import { FormTextInput } from '~/components/FormTextInput';
 import { useStorageContext } from '~/contexts/StorageContext';
 import { type Superhero } from '~/types/Superhero';
-import { Alert } from '../Alert';
 import { FormTextarea } from '../FormTextarea';
 import { FormUploadings } from '../FormUploadings';
 
@@ -15,16 +14,18 @@ export const CreateForm = () => {
   const [imageOne, setImageOne] = useState<File | null>(null);
   const [imageTwo, setImageTwo] = useState<File | null>(null);
   const [imageThree, setImageThree] = useState<File | null>(null);
-
-  const [isSuccessAlert, setIsSuccessAlert] = useState(false);
+  const toast = useToast();
 
   const onSuccessfulSubmit = () => {
-    setIsSuccessAlert(true);
+    toast({
+      title: 'Success!',
+      description: `You've created a new hero`,
+      status: 'success',
+      variant: 'subtle',
+      duration: 2000,
+      position: 'top-left',
+    });
     refetchHeroes();
-
-    setTimeout(() => {
-      setIsSuccessAlert(false);
-    }, 2000);
   };
 
   const { upload } = useStorageContext();
@@ -47,7 +48,6 @@ export const CreateForm = () => {
   const { mutate: createHero } = useCreateHero(onSuccessfulSubmit);
 
   const handlePost = (heroData: Superhero) => {
-    console.log(heroData.images);
     createHero(heroData);
   };
 
@@ -62,9 +62,8 @@ export const CreateForm = () => {
   return (
     <Formik
       initialValues={initialValues}
-      onSubmit={async values => {
+      onSubmit={async (values, actions) => {
         const publicImageUrls = await handleUploadImages();
-        console.log(publicImageUrls);
 
         handlePost({
           nickname: values.nickname,
@@ -75,6 +74,8 @@ export const CreateForm = () => {
           images: [...publicImageUrls],
           id: '',
         });
+
+        actions.resetForm();
       }}
     >
       {props => {
@@ -83,84 +84,76 @@ export const CreateForm = () => {
         return (
           <form onSubmit={props.handleSubmit}>
             <VStack
-              spacing={4}
+              spacing={{ base: 2, md: 4 }}
               align="flex-start"
               bg={'white'}
-              p={6}
+              p={{ md: 6 }}
               rounded={'md'}
               height={'100%'}
             >
-              {isSuccessAlert ? (
-                <Alert
-                  status="success"
-                  description="Thanks for adding new heroes. I believe you can add even more!"
-                  message="Successfully created!"
+              <Heading color="cyan.500">Create a new hero</Heading>
+
+              <FormUploadings
+                addImageOne={setImageOne}
+                addImageTwo={setImageTwo}
+                addImageThree={setImageThree}
+                images={[]}
+                isLoading={isSubmitting}
+              />
+
+              <Flex w={'100%'} gap={4} justify={'space-between'}>
+                <FormTextInput
+                  onChange={props.handleChange}
+                  value={props.values.nickname}
+                  name="nickname"
+                  label="Nickname"
+                  isLoading={isSubmitting}
                 />
-              ) : (
-                <>
-                  <Heading color="cyan.500">Create a new hero</Heading>
 
-                  <FormUploadings
-                    addImageOne={setImageOne}
-                    addImageTwo={setImageTwo}
-                    addImageThree={setImageThree}
-                    images={[]}
-                    isLoading={isSubmitting}
-                  />
+                <FormTextInput
+                  onChange={props.handleChange}
+                  value={props.values.realName}
+                  name="realName"
+                  label="Real name"
+                  isLoading={isSubmitting}
+                />
+              </Flex>
 
-                  <FormTextInput
-                    onChange={props.handleChange}
-                    value={props.values.nickname}
-                    name="nickname"
-                    label="Nickname"
-                    isLoading={isSubmitting}
-                  />
+              <FormTextInput
+                onChange={props.handleChange}
+                value={props.values.catchPhrase}
+                name="catchPhrase"
+                label="Catch phrase"
+                isLoading={isSubmitting}
+              />
 
-                  <FormTextInput
-                    onChange={props.handleChange}
-                    value={props.values.realName}
-                    name="realName"
-                    label="Real name"
-                    isLoading={isSubmitting}
-                  />
+              <FormTextarea
+                onChange={props.handleChange}
+                value={props.values.originDescription}
+                name="originDescription"
+                label="Origin description"
+                isLoading={isSubmitting}
+                placeholder="Where is your hero from?"
+              />
 
-                  <FormTextInput
-                    onChange={props.handleChange}
-                    value={props.values.catchPhrase}
-                    name="catchPhrase"
-                    label="Catch phrase"
-                    isLoading={isSubmitting}
-                  />
+              <FormTextarea
+                onChange={props.handleChange}
+                value={props.values.superpowers}
+                name="superpowers"
+                label="Superpowers"
+                isLoading={isSubmitting}
+                placeholder="What are the superpowers of you your hero?"
+              />
 
-                  <FormTextarea
-                    onChange={props.handleChange}
-                    value={props.values.originDescription}
-                    name="originDescription"
-                    label="Origin description"
-                    isLoading={isSubmitting}
-                    placeholder="Where is your hero from?"
-                  />
-
-                  <FormTextarea
-                    onChange={props.handleChange}
-                    value={props.values.superpowers}
-                    name="superpowers"
-                    label="Superpowers"
-                    isLoading={isSubmitting}
-                    placeholder="What are the superpowers of you your hero?"
-                  />
-
-                  <Button
-                    type="submit"
-                    colorScheme="cyan"
-                    width="full"
-                    isLoading={isSubmitting}
-                    loadingText="Creating"
-                  >
-                    Create
-                  </Button>
-                </>
-              )}
+              <Button
+                type="submit"
+                colorScheme="cyan"
+                width="full"
+                isLoading={isSubmitting}
+                loadingText="Creating"
+              >
+                Create
+              </Button>
             </VStack>
           </form>
         );

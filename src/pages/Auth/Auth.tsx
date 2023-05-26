@@ -6,12 +6,12 @@ import {
   Heading,
   Input,
   Link,
+  Text,
   VStack,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { Link as ReachLink, useNavigate } from 'react-router-dom';
-import { Alert } from '~/components/Alert';
 import { useAuthContext } from '~/contexts/AuthContext';
 import { supabase } from '~/utils/supabase';
 
@@ -19,17 +19,20 @@ export const Auth = () => {
   const { isSignedIn } = useAuthContext();
   const navigate = useNavigate();
   const [isError, setIsError] = useState(false);
-  const [isAlert, setIsAlert] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isSent, setIsSent] = useState(false);
 
   const handleLogin = async (email: string) => {
     setLoading(true);
+
     const { error } = await supabase.auth.signInWithOtp({ email });
 
     if (error) {
       setIsError(true);
+    } else {
+      setIsSent(true);
     }
-    setIsAlert(true);
+
     setLoading(false);
   };
 
@@ -51,41 +54,41 @@ export const Auth = () => {
       <form onSubmit={formik.handleSubmit}>
         <VStack
           spacing={6}
-          align="flex-start"
+          align={isSent || isError ? 'center' : 'flex-start'}
           bg={'white'}
           rounded={'md'}
           height={'60vh'}
           justifyContent={'center'}
         >
-          {isAlert ? (
+          {isSent && (
             <>
-              {isError ? (
-                <>
-                  <Alert
-                    status="error"
-                    message="Failed!"
-                    description="Please try again!"
-                  />
+              <Heading color={'cyan.500'} as={'h1'} size={'xl'}>
+                ✅ Successfully sent!
+              </Heading>
 
-                  <Button onClick={() => setIsAlert(false)}>Retry</Button>
-                </>
-              ) : (
-                <>
-                  <Alert
-                    status="success"
-                    message="Successfully send!"
-                    description="Check your email for the login link!"
-                  />
+              <Text size={'md'}>Check your email for the login link</Text>
 
-                  <Link as={ReachLink} to={'/'}>
-                    <Button w={'100%'} colorScheme="cyan">
-                      Back to home
-                    </Button>
-                  </Link>
-                </>
-              )}
+              <Link as={ReachLink} to={'/'}>
+                <Button w={'100%'} colorScheme="cyan">
+                  Back to home
+                </Button>
+              </Link>
             </>
-          ) : (
+          )}
+
+          {isError && (
+            <>
+              <Heading color={'cyan.500'} as={'h1'} size={'xl'}>
+                😢 Something went wrong
+              </Heading>
+
+              <Text size={'md'}>Please try again</Text>
+
+              <Button onClick={() => setIsError(false)}>Retry</Button>
+            </>
+          )}
+
+          {isSent || isError ? null : (
             <>
               <Heading color={'cyan.500'} as={'h1'} size={'xl'}>
                 Hey 👋!
