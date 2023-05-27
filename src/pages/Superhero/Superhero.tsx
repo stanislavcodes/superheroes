@@ -1,17 +1,17 @@
 import { ArrowLeftIcon } from '@chakra-ui/icons';
 import {
-  Box,
-  Button,
-  Link as ChakraLink,
-  Container,
-  Flex,
-  Heading,
-  Text,
-  VStack,
-  useDisclosure,
+Box,
+Button,
+Link as ChakraLink,
+Container,
+Flex,
+Heading,
+Text,
+VStack,
+useDisclosure,
 } from '@chakra-ui/react';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useCallback,useEffect,useRef,useState } from 'react';
+import { useNavigate,useParams } from 'react-router-dom';
 import { useDeleteHero } from '~/api/useDeleteHero';
 import { useGetHero } from '~/api/useGetHero';
 import { ConfirmDialog } from '~/components/ConfirmDialog';
@@ -32,7 +32,7 @@ export const Superhero = () => {
   const { isOpen: isRemoveConfirmationOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef(null);
 
-  const { data, isLoading, isSuccess, refetch } = useGetHero(id);
+  const { data, isLoading, refetch, isLoadingError } = useGetHero(id);
   const { mutate: deleteHero, isLoading: isRemoving } = useDeleteHero();
 
   const handleRemove = async () => {
@@ -57,10 +57,10 @@ export const Superhero = () => {
   }, []);
 
   useEffect(() => {
-    if (isSuccess && !isLoading && !data) {
+    if (isLoadingError && !data) {
       navigate('/404');
     }
-  }, [isSuccess, isLoading, data]);
+  }, [isLoadingError, data]);
 
   return (
     <Container

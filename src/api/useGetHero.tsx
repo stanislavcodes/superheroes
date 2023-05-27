@@ -9,5 +9,6 @@ export const useGetHero = (id: string) => {
     queryKey: [id],
     queryFn: () => get<Superhero>(`${API_URL}/superheroes/${id}`),
     refetchOnWindowFocus: false,
+    retry: false,
   });
 };
