@@ -1,5 +1,5 @@
 import { Grid } from '@chakra-ui/react';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch,SetStateAction } from 'react';
 import { ImageUploader } from '../ImageUploader';
 
 interface FormUploadingsProps {
@@ -30,19 +30,19 @@ export const FormUploadings = ({
         addImage={addImageOne}
         removeImage={addToImagesToRemove}
         isLoading={isLoading}
-        defaultImage={images[0] ?? null}
+        defaultImage={isLoading ? undefined : images[0] ?? null}
       />
       <ImageUploader
         addImage={addImageTwo}
         removeImage={addToImagesToRemove}
         isLoading={isLoading}
-        defaultImage={images[1] ?? null}
+        defaultImage={isLoading ? undefined : images[1] ?? null}
       />
       <ImageUploader
         addImage={addImageThree}
         removeImage={addToImagesToRemove}
         isLoading={isLoading}
-        defaultImage={images[2] ?? null}
+        defaultImage={isLoading ? undefined : images[2] ?? null}
       />
     </Grid>
   );

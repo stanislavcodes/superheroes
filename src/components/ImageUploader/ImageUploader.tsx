@@ -27,6 +27,14 @@ export const ImageUploader = ({
     defaultImage ?? null,
   );
 
+  const addDefaultToImagesToRemove = () => {
+    if (removeImage) {
+      const image = defaultImage?.split('/').pop() ?? '';
+
+      removeImage(image);
+    }
+  };
+
   useEffect(() => {
     setPreviewImage(defaultImage ?? null);
   }, [isLoading]);
@@ -57,9 +65,7 @@ export const ImageUploader = ({
 
   const handleCancel = () => {
     if (defaultImage === previewImage && removeImage) {
-      const name = defaultImage?.split('/').pop() ?? '';
-
-      removeImage(name);
+      addDefaultToImagesToRemove();
     }
 
     setPreviewImage(null);
@@ -142,18 +148,7 @@ export const ImageUploader = ({
             </Box>
           ) : (
             <>
-              <Button
-                onClick={handleButtonClick}
-                colorScheme="cyan"
-                isLoading={isLoading}
-                isDisabled={isLoading}
-                loadingText="Uploading"
-                size={{ base: 'sm', md: 'md' }}
-              >
-                {previewImage ? 'Change' : 'Upload'}
-              </Button>
-
-              {previewImage && (
+              {previewImage ? (
                 <CloseButton
                   bg="gray.100"
                   _hover={{ bg: 'cyan.500' }}
@@ -165,6 +160,17 @@ export const ImageUploader = ({
                   size={{ base: 'sm', md: 'md' }}
                   onClick={handleCancel}
                 />
+              ) : (
+                <Button
+                  onClick={handleButtonClick}
+                  colorScheme="cyan"
+                  isLoading={isLoading}
+                  isDisabled={isLoading}
+                  loadingText="Uploading"
+                  size={{ base: 'sm', md: 'md' }}
+                >
+                  Upload
+                </Button>
               )}
             </>
           )}

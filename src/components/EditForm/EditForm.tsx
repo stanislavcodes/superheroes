@@ -62,7 +62,7 @@ export const EditForm = ({ hero, onCancel }: EditFormProps) => {
           }),
       );
 
-      return [...prevImages, ...imagesURLs];
+      return [...prevImages, ...imagesURLs].slice(0, 3);
     } catch (error) {
       console.log(error);
     }
